@@ -9,8 +9,25 @@ const ProfilePage = () => {
   const router = useRouter();
   const [data, setData] = useState("nothing");
 
-  const logout = async () => {};
-  const getUserDetails = async () => {};
+  const logout = async () => {
+    try {
+      await axios.get("/api/users/logout");
+      toast.success("Logout success");
+      router.push("/login");
+    } catch (error: any) {
+      console.log("Logout failed", error.message);
+      toast.error(error.message);
+    }
+  };
+  const getUserDetails = async () => {
+    try {
+      const res = await axios.get("/api/users/me");
+      console.log("User Details", res.data);
+      setData(res.data.data._id);
+    } catch (error: any) {
+      return toast.error(error.message);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
